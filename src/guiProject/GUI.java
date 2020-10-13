@@ -1,27 +1,19 @@
 package guiProject;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class GUI implements ActionListener {
@@ -35,31 +27,18 @@ public class GUI implements ActionListener {
 	JPanel deletePnl;
 	JPanel displayPnl;
 	JTextField textField;
+	JTextField authorField;
+	JTextField descrField;
+	JTextField priceField;
 	
 	
    public GUI() {
 	   
 	    frame = new JFrame();
-	   textField =new JTextField(20);
-	   textField.addActionListener(this);
 	   
 	   //sideMenu Buttons
-	   JButton button = new JButton("Home");
-	   JButton button2 = new JButton("Create");
-	   JButton button3 = new JButton("Update");
-	   JButton button4 = new JButton("Delete");
-	   JButton button5 = new JButton("Display");
-	   JButton button6 = new JButton("Exit");
-	   JLabel picLabel = new JLabel();
-	   //picLabel.setIcon(new ImageIcon("miniCow.jpg"));
+	   JButton button = new JButton("Exit");
 	   button.addActionListener(this);
-	   button2.addActionListener(this);
-	   button3.addActionListener(this);
-	   button4.addActionListener(this);
-	   button5.addActionListener(this);
-	   button6.addActionListener(this);
-	   
-
 	   
 	   //lPanel sideMenu settings
 	   lPanel = new JPanel();
@@ -68,22 +47,33 @@ public class GUI implements ActionListener {
 	   lPanel.setPreferredSize(new Dimension(150,150));
 	   //lPanel.add(picLabel);
 	   
-	   lPanel.add(button6);
+	   lPanel.add(button);
 	   frame.add(lPanel, BorderLayout.WEST);
-	   
-	 
 	   
 	   //Home Panel
 	   homePnl = new JPanel();
 	   homePnl.setBackground(Color.BLACK);
-	   JLabel homeLbl = new JLabel("CHome");
+	   JLabel homeLbl = new JLabel("Home");
 	   homePnl.add(homeLbl);
 	   
 	   //Create Panel
 	   createPnl = new JPanel();
 	   createPnl.setBackground(Color.GREEN);
-	   JLabel createLbl = new JLabel("Create");
+	   createPnl.setLayout(new FlowLayout());
+	   JLabel createLbl = new JLabel("Add new book");
 	   createPnl.add(createLbl);
+	   textField =new JTextField(20);
+	   textField.addActionListener(this);
+	   authorField =new JTextField(20);
+	   authorField.addActionListener(this);
+	   descrField =new JTextField(20);
+	   descrField.addActionListener(this);
+	   priceField =new JTextField(20);
+	   priceField.addActionListener(this);
+	   createPnl.add(textField);
+	   createPnl.add(authorField);
+	   createPnl.add(descrField);
+	   createPnl.add(priceField);
 	   
 	   //Update Panel
 	   updatePnl = new JPanel();
@@ -95,13 +85,17 @@ public class GUI implements ActionListener {
 	   deletePnl = new JPanel();
 	   deletePnl.setBackground(Color.RED);
 	   JLabel deleteLbl = new JLabel("Delete");
-	   homePnl.add(deleteLbl);
+	   deletePnl.add(deleteLbl);
 	   
 	   //Display Panel
 	   displayPnl = new JPanel();
-	   displayPnl.setBackground(Color.WHITE);
-	   JLabel displayLbl = new JLabel("Display");
-	   homePnl.add(displayLbl);
+	   DataConnect data = new DataConnect();
+	   JTable table = new JTable(data.getData());
+	   table.setPreferredScrollableViewportSize(new Dimension(500, 100));
+	   table.setFillsViewportHeight(true);
+	   JScrollPane scrollPane = new JScrollPane(table);
+	   displayPnl.add(scrollPane);
+	   
 	   
 	   //Tabs
 	   JTabbedPane tp = new JTabbedPane();
@@ -125,11 +119,8 @@ public class GUI implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-//		String text = textField.getText();
-//	    textField.selectAll();
-//		count++;
-//		label.setText(text);
+		Functions f = new Functions();
+		JOptionPane.showMessageDialog(frame,f.x);
 	}
 	
 	
