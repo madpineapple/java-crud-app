@@ -9,11 +9,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 public class GUI implements ActionListener {
@@ -30,6 +33,7 @@ public class GUI implements ActionListener {
 	JTextField authorField;
 	JTextField descrField;
 	JTextField priceField;
+	JButton submitBTN1;
 	
 	
    public GUI() {
@@ -45,8 +49,6 @@ public class GUI implements ActionListener {
 	   lPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
 	   lPanel.setBackground(Color.GRAY);
 	   lPanel.setPreferredSize(new Dimension(150,150));
-	   //lPanel.add(picLabel);
-	   
 	   lPanel.add(button);
 	   frame.add(lPanel, BorderLayout.WEST);
 	   
@@ -58,26 +60,65 @@ public class GUI implements ActionListener {
 	   
 	   //Create Panel
 	   createPnl = new JPanel();
+	   createPnl.setLayout((LayoutManager) new BoxLayout(createPnl, BoxLayout.Y_AXIS));
+	   JPanel textEntryPNL = new JPanel(); 
+	   JPanel labelPNL = new JPanel();
+	   JPanel formPNL = new JPanel(); 
 	   createPnl.setBackground(Color.GREEN);
-	   createPnl.setLayout(new FlowLayout());
 	   JLabel createLbl = new JLabel("Add new book");
+	   createLbl.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
+
 	   createPnl.add(createLbl);
+	   
+	   //labelPnl 
+	   labelPNL.setBorder(BorderFactory.createEmptyBorder(0, 30, 40, 30));
+	   labelPNL.setLayout((LayoutManager) new BoxLayout(labelPNL, BoxLayout.Y_AXIS));
+	   JLabel lbl1 = new JLabel("title");
+	   JLabel lbl2 = new JLabel("author");
+	   JLabel lbl3 = new JLabel("descr");
+	   JLabel lbl4= new JLabel("price");
+	   labelPNL.add(lbl1);
+	   labelPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+	   labelPNL.add(lbl2);
+	   labelPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+	   labelPNL.add(lbl3);
+	   labelPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+	   labelPNL.add(lbl4);
+	   labelPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+	   formPNL.add(labelPNL);
+	   	   
+	   //textEntryPNL form
+	   textEntryPNL.setLayout((LayoutManager) new BoxLayout(textEntryPNL, BoxLayout.Y_AXIS));
+	   textEntryPNL.setBorder(BorderFactory.createEmptyBorder(10, 30, 40, 30));
 	   textField =new JTextField(20);
 	   textField.addActionListener(this);
+	   textEntryPNL.add(textField);
+	   textEntryPNL.add(Box.createRigidArea(new Dimension(0, 5)));
 	   authorField =new JTextField(20);
 	   authorField.addActionListener(this);
+	   textEntryPNL.add(authorField);
+	   textEntryPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+       textEntryPNL.setSize(10,10);
 	   descrField =new JTextField(20);
 	   descrField.addActionListener(this);
+	   descrField.setLocation(0,50);
 	   priceField =new JTextField(20);
 	   priceField.addActionListener(this);
-	   createPnl.add(textField);
-	   createPnl.add(authorField);
-	   createPnl.add(descrField);
-	   createPnl.add(priceField);
+	   textEntryPNL.add(descrField);
+	   textEntryPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+	   textEntryPNL.add(priceField);
+	   textEntryPNL.add(Box.createRigidArea(new Dimension(0, 5)));
+	   submitBTN1 = new JButton("Submit");
+	   submitBTN1.addActionListener(this);
+	   textEntryPNL.add(submitBTN1);
+	   formPNL.add(textEntryPNL);
+	   
+	   createPnl.add(formPNL);
+
 	   
 	   //Update Panel
 	   updatePnl = new JPanel();
-	   createPnl.setBackground(Color.BLUE);
+	   updatePnl.setBackground(Color.BLUE);
 	   JLabel updateLbl = new JLabel("Update");
 	   updatePnl.add(updateLbl);
 	   
@@ -96,7 +137,6 @@ public class GUI implements ActionListener {
 	   JScrollPane scrollPane = new JScrollPane(table);
 	   displayPnl.add(scrollPane);
 	   
-	   
 	   //Tabs
 	   JTabbedPane tp = new JTabbedPane();
 	   tp.add("Home", homePnl);
@@ -109,7 +149,7 @@ public class GUI implements ActionListener {
 	   //frame settings
 	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   frame.setTitle("Hello GUI");
-	   frame.setSize(500,500);
+	   frame.setSize(1000,500);
 	   frame.setVisible(true);
 	   
    }
@@ -119,8 +159,13 @@ public class GUI implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Functions f = new Functions();
-		JOptionPane.showMessageDialog(frame,f.x);
+		JButton source = (JButton) e.getSource();
+	    if(source.equals(submitBTN1)){
+			JOptionPane.showMessageDialog(frame,textField.getText());
+	    }
+	    else{
+	    	frame.dispose();
+	    }
 	}
 	
 	
