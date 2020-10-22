@@ -14,10 +14,15 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 
 public class GUI implements ActionListener {
 
@@ -32,9 +37,10 @@ public class GUI implements ActionListener {
 	JTextField textField;
 	JTextField authorField;
 	JTextField descrField;
-	JTextField priceField;
+	JFormattedTextField priceField;
 	JButton submitBTN1;
-	
+	JLabel homeLbl2;
+	ImageIcon img;
 	
    public GUI() {
 	   
@@ -48,7 +54,13 @@ public class GUI implements ActionListener {
 	   lPanel = new JPanel();
 	   lPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 10, 30));
 	   lPanel.setBackground(Color.GRAY);
-	   lPanel.setPreferredSize(new Dimension(150,150));
+	   lPanel.setPreferredSize(new Dimension(250,250));
+	   JLabel title = new JLabel("Bookstore Data Manager App");
+	   JLabel icon = new JLabel();
+	   img= new ImageIcon(getClass().getResource("miniCow.jpg"));
+	   icon= new JLabel(img);
+	   lPanel.add(title);
+	   lPanel.add(icon);
 	   lPanel.add(button);
 	   frame.add(lPanel, BorderLayout.WEST);
 	   
@@ -56,7 +68,10 @@ public class GUI implements ActionListener {
 	   homePnl = new JPanel();
 	   homePnl.setBackground(Color.BLACK);
 	   JLabel homeLbl = new JLabel("Home");
+	   img= new ImageIcon(getClass().getResource("miniCow.jpg"));
+	   homeLbl2= new JLabel(img);
 	   homePnl.add(homeLbl);
+	   homePnl.add(homeLbl2);
 	   
 	   //Create Panel
 	   createPnl = new JPanel();
@@ -102,7 +117,7 @@ public class GUI implements ActionListener {
 	   descrField =new JTextField(20);
 	   descrField.addActionListener(this);
 	   descrField.setLocation(0,50);
-	   priceField =new JTextField(20);
+	   priceField =new JFormattedTextField(new DecimalFormat("#.0"));
 	   priceField.addActionListener(this);
 	   textEntryPNL.add(descrField);
 	   textEntryPNL.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -161,7 +176,20 @@ public class GUI implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton source = (JButton) e.getSource();
 	    if(source.equals(submitBTN1)){
-			JOptionPane.showMessageDialog(frame,textField.getText());
+	       if(textField.getText().trim().isEmpty()||authorField.getText().trim().isEmpty()||
+	    		   descrField.getText().trim().isEmpty()||priceField.getText().trim().isEmpty()) {
+	    	 //custom title, error icon
+	    	   JOptionPane.showMessageDialog(frame,
+	    	       "Please fill out all text boxes.",
+	    	       "Inane error",
+	    	       JOptionPane.ERROR_MESSAGE);
+	       }else {
+	    	   DataConnect data = new DataConnect();
+	    	   BigDecimal A= new BigDecimal(priceField.getText());
+	           data.addData(textField.getText(),authorField.getText(),descrField.getText(),A
+	            		);
+	       }
+	 	   
 	    }
 	    else{
 	    	frame.dispose();
